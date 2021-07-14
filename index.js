@@ -41,10 +41,8 @@ app.get("/api/v1/cfdi",token, (request, response) => {
 });
 
 app.get("/api/v1/cfdi/valida/:re&&:rr&&:tt&&:id",(request, res)=>{
-  const re    = request.params.re
-  const rr = request.params.rr
-  const tt = request.params.tt
-  const id = request.params.id
+  const {re,rr,tt,id} = request.params
+
   // console.log(re)
   // console.log(rr)
 
