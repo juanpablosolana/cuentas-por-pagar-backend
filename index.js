@@ -22,6 +22,8 @@ app.use(fileUpload());
 
 // Custom API xml to JSON //
 let cfdiJson = [];
+
+
 app.get("/api/v1/cfdi",token, (request, response) => {
   fs.readdir("./files", function (err, archivos) {
     if (err) {
@@ -38,7 +40,13 @@ app.get("/api/v1/cfdi",token, (request, response) => {
   cfdiJson=[]
 });
 
-app.get("/api/v1/cfdi/valida",(request, response)=>{
+app.get("/api/v1/cfdi/valida/:re&&:rr&&:tt&&:id",(request, res)=>{
+  const re    = request.params.re
+  const rr = request.params.rr
+  const tt = request.params.tt
+  const id = request.params.id
+  // console.log(re)
+  // console.log(rr)
 
   const url = 'https://pruebacfdiconsultaqr.cloudapp.net/ConsultaCFDIService.svc';
   const sampleHeaders = {
@@ -51,18 +59,18 @@ app.get("/api/v1/cfdi/valida",(request, response)=>{
      <soapenv:Body>
         <tem:Consulta>
            <!--Optional:-->
-           <tem:expresionImpresa><![CDATA[?re=LAN8507268IA&rr=LAN7008173R5&tt=5800.00&id=4e87d1d7-a7d0-465f-a771-1dd216f63c1a]]>
+           <tem:expresionImpresa><![CDATA[?re=${re}&rr=${rr}&tt=${tt}&id=${id}]]>
            </tem:expresionImpresa>
         </tem:Consulta>
      </soapenv:Body>
   </soapenv:Envelope>`;
 
-  (async () => {
-    const { response } = await soapRequest({ url: url, headers: sampleHeaders, xml: xml }); // Optional timeout parameter(milliseconds)
-    const { headers, body, statusCode } = response;
-   console.log(body)
-  })();
-
+  const data = async () => {
+    const { response } = await soapRequest({ url: url, headers: sampleHeaders, xml: xml });
+    const { body } = response;
+   res.send(body)
+  }
+  data()
 })
 
 
