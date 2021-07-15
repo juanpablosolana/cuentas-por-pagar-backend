@@ -11,10 +11,7 @@ const token = require('./middelware/token')
 const usersRouter = require('./controllers/users')
 const usersLogin = require("./controllers/login");
 const { Mongoose } = require('mongoose')
-const axios = require('axios').default;
-process.env['NODE_TLS_REJECT_UNAUTHORIZED'] = 0;
-
-
+const convert = require('xml-js');
 
 app.use(cors())
 app.use(express.json())
@@ -40,36 +37,32 @@ app.get("/api/v1/cfdi",token, (request, response) => {
   cfdiJson=[]
 });
 
-app.get("/api/v1/cfdi/valida/:re&&:rr&&:tt&&:id",(request, res)=>{
-  const {re,rr,tt,id} = request.params
+// app.get("/api/v1/cfdi/validador/:re&&:rr&&:tt&&:id",(request, res)=>{
+//   const {re,rr,tt,id} = request.params
+//   const url = 'https://consultaqr.facturaelectronica.sat.gob.mx/ConsultaCFDIService.svc';
+//   const sampleHeaders = {
+//     'user-agent': 'sampleTest',
+//     'Content-Type': 'text/xml;charset=UTF-8',
+//     'soapAction': 'http://tempuri.org/IConsultaCFDIService/Consulta',
+//   };
+//   const xml = `<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:tem="http://tempuri.org/">
+//      <soapenv:Header/>
+//      <soapenv:Body>
+//         <tem:Consulta>
+//            <!--Optional:-->
+//            <tem:expresionImpresa><![CDATA[?re=${re}&rr=${rr}&tt=${tt}&id=${id}]]>
+//            </tem:expresionImpresa>
+//         </tem:Consulta>
+//      </soapenv:Body>
+//   </soapenv:Envelope>`;
 
-  // console.log(re)
-  // console.log(rr)
-
-  const url = 'https://pruebacfdiconsultaqr.cloudapp.net/ConsultaCFDIService.svc';
-  const sampleHeaders = {
-    'user-agent': 'sampleTest',
-    'Content-Type': 'text/xml;charset=UTF-8',
-    'soapAction': 'http://tempuri.org/IConsultaCFDIService/Consulta',
-  };
-  const xml = `<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:tem="http://tempuri.org/">
-     <soapenv:Header/>
-     <soapenv:Body>
-        <tem:Consulta>
-           <!--Optional:-->
-           <tem:expresionImpresa><![CDATA[?re=${re}&rr=${rr}&tt=${tt}&id=${id}]]>
-           </tem:expresionImpresa>
-        </tem:Consulta>
-     </soapenv:Body>
-  </soapenv:Envelope>`;
-
-  const data = async () => {
-    const { response } = await soapRequest({ url: url, headers: sampleHeaders, xml: xml });
-    const { body } = response;
-   res.send(body)
-  }
-  data()
-})
+//   const data = async () => {
+//     const { response } = await soapRequest({ url: url, headers: sampleHeaders, xml: xml });
+//     const { body } = response;
+//     res.send(convert.xml2json(body, { compact: true, spaces: 4 }))
+//   }
+//   data()
+// })
 
 
 // main //
